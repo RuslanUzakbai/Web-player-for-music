@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Простой музыкальный плеер</title>
@@ -73,7 +73,8 @@
 
     <div class="player">
         <h2>Музыкальный плеер</h2>
-        <audio id="audio" src="songs/1.mp3"></audio>
+        <!-- Убедитесь, что путь к файлу правильный -->
+        <audio id="audio" src="https://yourusername.github.io/repository/songs/1.mp3"></audio>
         <div class="track-info">
             <p>Трек: <span id="track-name">Не выбран</span></p>
         </div>
@@ -91,8 +92,9 @@
         const progress = document.getElementById('progress');
         const trackName = document.getElementById('track-name');
 
+        // Задать имя трека
         audio.addEventListener('loadeddata', function() {
-            trackName.textContent = '1.mp3';
+            trackName.textContent = '1.mp3'; // Это имя файла, он будет отображаться после загрузки
         });
 
         // Воспроизведение / пауза
