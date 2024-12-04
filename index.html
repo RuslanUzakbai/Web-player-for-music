@@ -20,7 +20,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            width: 400px;
+            width: 300px;
             text-align: center;
         }
 
@@ -67,20 +67,29 @@
             margin-top: 20px;
             font-size: 14px;
         }
+
+        .seek-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
 
     <div class="player">
         <h2>Музыкальный плеер</h2>
-        <!-- Убедитесь, что путь к файлу правильный -->
-        <audio id="audio" src="https://ruslanuzakbai.github.io/Web-player-for-music/songs/1.mp3"></audio>
+        <audio id="audio" src="https://yourusername.github.io/repository/songs/1.mp3"></audio>
         <div class="track-info">
             <p>Трек: <span id="track-name">Не выбран</span></p>
         </div>
         <button id="playPauseBtn">Воспроизвести</button>
         <div class="progress-bar">
             <div id="progress" class="progress"></div>
+        </div>
+        <div class="seek-buttons">
+            <button id="rewindBtn">« 10с</button>
+            <button id="forwardBtn">10с »</button>
         </div>
         <button id="stopBtn" disabled>Остановить</button>
     </div>
@@ -91,10 +100,12 @@
         const stopBtn = document.getElementById('stopBtn');
         const progress = document.getElementById('progress');
         const trackName = document.getElementById('track-name');
+        const rewindBtn = document.getElementById('rewindBtn');
+        const forwardBtn = document.getElementById('forwardBtn');
 
         // Задать имя трека
         audio.addEventListener('loadeddata', function() {
-            trackName.textContent = '1.mp3'; // Это имя файла, он будет отображаться после загрузки
+            trackName.textContent = '1.mp3'; // Имя трека
         });
 
         // Воспроизведение / пауза
@@ -129,6 +140,16 @@
             const clickX = event.clientX - rect.left;
             const newTime = (clickX / rect.width) * audio.duration;
             audio.currentTime = newTime;
+        });
+
+        // Перемотка на 10 секунд назад
+        rewindBtn.addEventListener('click', function() {
+            audio.currentTime = Math.max(0, audio.currentTime - 10);
+        });
+
+        // Перемотка на 10 секунд вперед
+        forwardBtn.addEventListener('click', function() {
+            audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
         });
     </script>
 
