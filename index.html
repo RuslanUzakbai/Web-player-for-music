@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Музыкальный плеер</title>
+    <title>Простой музыкальный плеер</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -73,7 +73,8 @@
 
     <div class="player">
         <h2>Музыкальный плеер</h2>
-        <audio id="audio" src="songs/1"></audio>
+        <!-- Убедитесь, что путь к файлу правильный -->
+        <audio id="audio" src="songs/1.mp3"></audio>
         <div class="track-info">
             <p>Трек: <span id="track-name">Не выбран</span></p>
         </div>
@@ -91,10 +92,12 @@
         const progress = document.getElementById('progress');
         const trackName = document.getElementById('track-name');
 
+        // Задать имя трека
         audio.addEventListener('loadeddata', function() {
-            trackName.textContent = 'songs/1.mp3';
+            trackName.textContent = '1.mp3'; // Это имя файла, он будет отображаться после загрузки
         });
 
+        // Воспроизведение / пауза
         playPauseBtn.addEventListener('click', function() {
             if (audio.paused) {
                 audio.play();
@@ -106,6 +109,7 @@
             }
         });
 
+        // Остановка
         stopBtn.addEventListener('click', function() {
             audio.pause();
             audio.currentTime = 0;
@@ -113,11 +117,13 @@
             stopBtn.disabled = true;
         });
 
+        // Обновление прогресса
         audio.addEventListener('timeupdate', function() {
             const progressPercentage = (audio.currentTime / audio.duration) * 100;
             progress.style.width = progressPercentage + '%';
         });
 
+        // Установка текущего времени через клик на прогресс-бар
         progress.addEventListener('click', function(event) {
             const rect = progress.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
