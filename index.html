@@ -21,7 +21,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
             padding: 20px;
-            width: 350px;
+            width: 400px;
             text-align: center;
         }
 
@@ -50,6 +50,8 @@
             background-color: #555;
             border-radius: 5px;
             margin-top: 10px;
+            cursor: pointer;
+            position: relative;
         }
 
         .progress-bar .progress {
@@ -83,10 +85,19 @@
             margin: 3px 0;
             border-radius: 5px;
             transition: background-color 0.3s;
+            display: flex;
+            justify-content: space-between;
         }
 
         .song-list li:hover {
             background-color: #333;
+        }
+
+        .time-info {
+            font-size: 14px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -99,8 +110,12 @@
             <p>Трек: <span id="track-name">Не выбран</span></p>
         </div>
         <button id="playPauseBtn">▶️</button>
-        <div class="progress-bar">
+        <div class="progress-bar" id="progressBar">
             <div id="progress" class="progress"></div>
+        </div>
+        <div class="time-info">
+            <span id="currentTime">0:00</span>
+            <span id="totalTime">0:00</span>
         </div>
         <div class="seek-buttons">
             <button id="rewindBtn">⏪</button>
@@ -108,9 +123,7 @@
         </div>
         <button id="stopBtn" disabled>⏹️</button>
 
-        <!-- Список песен -->
         <ul class="song-list" id="songList">
-            <!-- Песни будут добавляться динамически через JS -->
         </ul>
     </div>
 
@@ -119,7 +132,10 @@
         const playPauseBtn = document.getElementById('playPauseBtn');
         const stopBtn = document.getElementById('stopBtn');
         const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progressBar');
         const trackName = document.getElementById('track-name');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalTimeEl = document.getElementById('totalTime');
         const rewindBtn = document.getElementById('rewindBtn');
         const forwardBtn = document.getElementById('forwardBtn');
         const songList = document.getElementById('songList');
@@ -131,14 +147,28 @@
             { name: 'ZWE1HVNDXR - Killa Samba', path: 'https://ruslanuzakbai.github.io/Web-player-for-music/songs/4.mp3' }
         ];
 
+        let currentSongIndex = 0;
+
         songs.forEach((song, index) => {
             const songItem = document.createElement('li');
+            const duration = document.createElement('span');
             songItem.textContent = song.name;
             songItem.onclick = () => loadSong(song, index);
+            duration.id = `duration-${index}`;
+            duration.textContent = '...';
+            songItem.appendChild(duration);
             songList.appendChild(songItem);
+
+            const tempAudio = new Audio(song.path);
+            tempAudio.addEventListener('loadedmetadata', () => {
+                const minutes = Math.floor(tempAudio.duration / 60);
+                const seconds = Math.floor(tempAudio.duration % 60).toString().padStart(2, '0');
+                duration.textContent = `${minutes}:${seconds}`;
+            });
         });
 
         function loadSong(song, index) {
+            currentSongIndex = index;
             audio.src = song.path;
             trackName.textContent = song.name;
             audio.load();
@@ -147,40 +177,56 @@
             stopBtn.disabled = false;
         }
 
-        // Воспроизведение / пауза
-        playPauseBtn.addEventListener('click', function() {
+        playPauseBtn.addEventListener('click', function () {
             if (audio.paused) {
                 audio.play();
                 playPauseBtn.textContent = '⏸️';
-                stopBtn.disabled = false;
             } else {
                 audio.pause();
                 playPauseBtn.textContent = '▶️';
             }
         });
 
-        // Остановка
-        stopBtn.addEventListener('click', function() {
+        stopBtn.addEventListener('click', function () {
             audio.pause();
             audio.currentTime = 0;
             playPauseBtn.textContent = '▶️';
             stopBtn.disabled = true;
         });
 
-        // Обновление прогресса
-        audio.addEventListener('timeupdate', function() {
+        audio.addEventListener('timeupdate', function () {
             const progressPercentage = (audio.currentTime / audio.duration) * 100;
             progress.style.width = progressPercentage + '%';
+
+            const minutes = Math.floor(audio.currentTime / 60);
+            const seconds = Math.floor(audio.currentTime % 60).toString().padStart(2, '0');
+            currentTimeEl.textContent = `${minutes}:${seconds}`;
         });
 
-        // Перемотка на 10 секунд назад
-        rewindBtn.addEventListener('click', function() {
+        audio.addEventListener('loadedmetadata', function () {
+            const minutes = Math.floor(audio.duration / 60);
+            const seconds = Math.floor(audio.duration % 60).toString().padStart(2, '0');
+            totalTimeEl.textContent = `${minutes}:${seconds}`;
+        });
+
+        progressBar.addEventListener('click', function (event) {
+            const rect = progressBar.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const newTime = (clickX / rect.width) * audio.duration;
+            audio.currentTime = newTime;
+        });
+
+        rewindBtn.addEventListener('click', function () {
             audio.currentTime = Math.max(0, audio.currentTime - 10);
         });
 
-        // Перемотка на 10 секунд вперед
-        forwardBtn.addEventListener('click', function() {
+        forwardBtn.addEventListener('click', function () {
             audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+        });
+
+        audio.addEventListener('ended', function () {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            loadSong(songs[currentSongIndex], currentSongIndex);
         });
     </script>
 
