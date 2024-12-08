@@ -15,7 +15,7 @@
         padding: 10px;
         background-color: #121212;
         color: #ffffff;
-        overflow-y: auto; /* Включаем прокрутку страницы */
+        overflow-y: auto;
     }
 
     .player {
@@ -24,11 +24,11 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
         padding: 20px;
         width: 400px;
-        max-height: 90vh; /* Ограничиваем высоту плеера */
+        max-height: 90vh;
         display: flex;
         flex-direction: column;
         align-items: center;
-        overflow-y: auto; /* Добавляем прокрутку, если контент превышает высоту */
+        overflow-y: auto;
     }
 
     .player button {
@@ -36,11 +36,11 @@
         color: white;
         border: none;
         padding: 10px 20px;
-        font-size: 18px; /* Увеличиваем размер кнопок */
+        font-size: 18px;
         cursor: pointer;
         border-radius: 5px;
         margin: 10px;
-        min-width: 50px; /* Минимальная ширина для кнопок */
+        min-width: 50px;
     }
 
     .player button:hover {
@@ -49,7 +49,7 @@
 
     .progress-bar {
         width: 100%;
-        height: 15px; /* Увеличиваем высоту прогресс-бара */
+        height: 15px;
         background-color: #555;
         border-radius: 5px;
         margin-top: 10px;
@@ -84,8 +84,8 @@
         padding: 0;
         list-style: none;
         text-align: left;
-        max-height: 300px; /* Ограничиваем высоту списка песен */
-        overflow-y: auto; /* Добавляем прокрутку */
+        max-height: 300px;
+        overflow-y: auto;
         width: 100%;
     }
 
@@ -103,11 +103,10 @@
         background-color: #333;
     }
 
-    /* Адаптивный дизайн для мобильных устройств */
     @media (max-width: 600px) {
         .player {
             width: 90%;
-            max-height: none; /* Убираем ограничение высоты */
+            max-height: none;
         }
 
         .player button {
@@ -116,11 +115,11 @@
         }
 
         .progress-bar {
-            height: 10px; /* Уменьшаем высоту прогресс-бара */
+            height: 10px;
         }
 
         .song-list {
-            max-height: 200px; /* Уменьшаем максимальную высоту списка песен */
+            max-height: 200px;
         }
     }
 </style>
@@ -269,6 +268,5 @@
             loadSong(songs[currentSongIndex], currentSongIndex);
         });
     </script>
-
 </body>
 </html>
