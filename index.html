@@ -15,7 +15,7 @@
         padding: 10px;
         background-color: #121212;
         color: #ffffff;
-        overflow-y: auto; /* Позволяет прокрутку всей страницы */
+        overflow-y: auto; /* Включаем прокрутку страницы */
     }
 
     .player {
@@ -28,7 +28,55 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        overflow-y: auto; /* Добавляем прокрутку к содержимому плеера */
+        overflow-y: auto; /* Добавляем прокрутку, если контент превышает высоту */
+    }
+
+    .player button {
+        background-color: #bb86fc;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px; /* Увеличиваем размер кнопок */
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 10px;
+        min-width: 50px; /* Минимальная ширина для кнопок */
+    }
+
+    .player button:hover {
+        background-color: #9b59b6;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 15px; /* Увеличиваем высоту прогресс-бара */
+        background-color: #555;
+        border-radius: 5px;
+        margin-top: 10px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .progress-bar .progress {
+        height: 100%;
+        background-color: #bb86fc;
+        border-radius: 5px;
+        width: 0;
+    }
+
+    .time-info {
+        font-size: 14px;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .seek-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        width: 100%;
     }
 
     .song-list {
@@ -37,7 +85,8 @@
         list-style: none;
         text-align: left;
         max-height: 300px; /* Ограничиваем высоту списка песен */
-        overflow-y: auto; /* Добавляем прокрутку, если список слишком длинный */
+        overflow-y: auto; /* Добавляем прокрутку */
+        width: 100%;
     }
 
     .song-list li {
@@ -52,6 +101,27 @@
 
     .song-list li:hover {
         background-color: #333;
+    }
+
+    /* Адаптивный дизайн для мобильных устройств */
+    @media (max-width: 600px) {
+        .player {
+            width: 90%;
+            max-height: none; /* Убираем ограничение высоты */
+        }
+
+        .player button {
+            font-size: 16px;
+            padding: 8px 16px;
+        }
+
+        .progress-bar {
+            height: 10px; /* Уменьшаем высоту прогресс-бара */
+        }
+
+        .song-list {
+            max-height: 200px; /* Уменьшаем максимальную высоту списка песен */
+        }
     }
 </style>
 
